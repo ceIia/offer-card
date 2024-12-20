@@ -8,7 +8,7 @@ export function SchematicBlur({ className }: SchematicBlurProps) {
   return (
     <div
       className={cn(
-        "fixed bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent pointer-events-none z-30",
+        "fixed bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-white dark:from-black to-transparent pointer-events-none z-30",
         className
       )}
     />
