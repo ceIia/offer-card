@@ -1,101 +1,205 @@
-import Image from "next/image";
+"use client";
+
+import { Blur } from "@/components/blur";
+import {
+  Card,
+  type BigPriceType,
+  type BelowBigPrice,
+  type PricingDetails,
+} from "@/components/card";
+import { cn } from "@/utils/classnames";
+import { useState } from "react";
+
+// Add new type for base price display
+export type BasePriceDisplay = "below" | "none";
+
+const offers = [
+  {
+    id: 1,
+    name: "dynamic luce",
+    provider: "engie",
+  },
+  {
+    id: 2,
+    name: "dynamic luce",
+    provider: "engie",
+  },
+  {
+    id: 3,
+    name: "dynamic luce",
+    provider: "engie",
+  },
+  {
+    id: 4,
+    name: "dynamic luce",
+    provider: "engie",
+  },
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [bigPrice, setBigPrice] = useState<BigPriceType>("estimate");
+  const [below, setBelowBigPrice] = useState<BelowBigPrice>("composition");
+  const [compositionInDetails, setCompositionInDetails] =
+    useState<boolean>(false);
+  const [details, setDetails] = useState<PricingDetails>({
+    displayEnergyBase: true,
+    displayPeople: true,
+    displayConsumption: true,
+  });
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  return (
+    <div className="grid place-items-center gap-6 relative mt-32 px-8 md:px-0">
+      <div className="space-y-6 gradient-mask-b-40 w-full">
+        {offers.map((offer) => (
+          <Card
+            key={offer.id}
+            offer={offer}
+            bigPrice={{
+              type: bigPrice,
+              below,
+            }}
+            pricingDetails={{
+              ...details,
+              displayPriceEstimateComposition: compositionInDetails,
+            }}
+          />
+        ))}
+      </div>
+
+      <Blur />
+
+      <div className="fixed bottom-6 right-6 z-40 space-y-1.5">
+        <div className="flex gap-1.5 items-center">
+          <p className="text-xs leading-none text-zinc-500 dark:text-zinc-400">
+            big price
+          </p>
+          <button
+            onClick={() => setBigPrice("estimate")}
+            type="button"
+            className={cn(
+              "bg-zinc-100 dark:bg-zinc-800 rounded-md px-1.5 py-1 text-xs leading-none",
+              bigPrice === "estimate" && "bg-blue-100 dark:bg-blue-800"
+            )}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            estimate
+          </button>
+          <button
+            onClick={() => setBigPrice("kwh")}
+            type="button"
+            className={cn(
+              "bg-zinc-100 dark:bg-zinc-800 rounded-md px-1.5 py-1 text-xs leading-none",
+              bigPrice === "kwh" && "bg-blue-100 dark:bg-blue-800"
+            )}
           >
-            Read our docs
-          </a>
+            kwh
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <div className="flex gap-1.5 items-center">
+          <p className="text-xs leading-none text-zinc-500 dark:text-zinc-400">
+            below price
+          </p>
+          <button
+            onClick={() => setBelowBigPrice("estimate")}
+            type="button"
+            className={cn(
+              "bg-zinc-100 dark:bg-zinc-800 rounded-md px-1.5 py-1 text-xs leading-none",
+              below === "estimate" && "bg-blue-100 dark:bg-blue-800"
+            )}
+          >
+            estimate
+          </button>
+          <button
+            onClick={() => setBelowBigPrice("composition")}
+            type="button"
+            className={cn(
+              "bg-zinc-100 dark:bg-zinc-800 rounded-md px-1.5 py-1 text-xs leading-none",
+              below === "composition" && "bg-blue-100 dark:bg-blue-800"
+            )}
+          >
+            composition
+          </button>
+          <button
+            onClick={() => setBelowBigPrice("none")}
+            type="button"
+            className={cn(
+              "bg-zinc-100 dark:bg-zinc-800 rounded-md px-1.5 py-1 text-xs leading-none",
+              below === "none" && "bg-blue-100 dark:bg-blue-800"
+            )}
+          >
+            none
+          </button>
+        </div>
+
+        <div className="flex gap-1.5 items-center">
+          <p className="text-xs leading-none text-zinc-500 dark:text-zinc-400">
+            composition in details
+          </p>
+          <button
+            onClick={() => setCompositionInDetails(!compositionInDetails)}
+            type="button"
+            className={cn(
+              "bg-zinc-100 dark:bg-zinc-800 rounded-md px-1.5 py-1 text-xs leading-none",
+              compositionInDetails && "bg-blue-100 dark:bg-blue-800"
+            )}
+          >
+            {compositionInDetails ? "on" : "off"}
+          </button>
+        </div>
+
+        <div className="flex gap-1.5 items-center">
+          <p className="text-xs leading-none text-zinc-500 dark:text-zinc-400">
+            details
+          </p>
+          <button
+            onClick={() =>
+              setDetails((prev) => ({
+                ...prev,
+                displayEnergyBase: !prev.displayEnergyBase,
+              }))
+            }
+            type="button"
+            className={cn(
+              "bg-zinc-100 dark:bg-zinc-800 rounded-md px-1.5 py-1 text-xs leading-none",
+              details.displayEnergyBase && "bg-blue-100 dark:bg-blue-800"
+            )}
+          >
+            energy base
+          </button>
+
+          <button
+            onClick={() =>
+              setDetails((prev) => ({
+                ...prev,
+                displayPeople: !prev.displayPeople,
+              }))
+            }
+            type="button"
+            className={cn(
+              "bg-zinc-100 dark:bg-zinc-800 rounded-md px-1.5 py-1 text-xs leading-none",
+              details.displayPeople && "bg-blue-100 dark:bg-blue-800"
+            )}
+          >
+            people
+          </button>
+
+          <button
+            onClick={() =>
+              setDetails((prev) => ({
+                ...prev,
+                displayConsumption: !prev.displayConsumption,
+              }))
+            }
+            type="button"
+            className={cn(
+              "bg-zinc-100 dark:bg-zinc-800 rounded-md px-1.5 py-1 text-xs leading-none",
+              details.displayConsumption && "bg-blue-100 dark:bg-blue-800"
+            )}
+          >
+            consumption
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
