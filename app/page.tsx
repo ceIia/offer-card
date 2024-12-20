@@ -48,7 +48,7 @@ export default function Home() {
   });
 
   return (
-    <div className="grid place-items-center gap-6 relative mt-32 px-8 md:px-0">
+    <div className="grid place-items-center gap-6 relative mt-24 px-8 md:px-0">
       <div className="space-y-6 gradient-mask-b-40 w-full">
         {offers.map((offer) => (
           <Card
